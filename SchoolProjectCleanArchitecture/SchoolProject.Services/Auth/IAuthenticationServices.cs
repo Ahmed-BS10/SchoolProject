@@ -10,6 +10,6 @@ namespace SchoolProject.Services.Auth
 {
     public interface IAuthenticationServices 
     {
-        Task<JWTAuthResult> CreateTokenAsync(ApplicationUser applicationUser);
+        JWTAuthResult CreateTokenAsync(ApplicationUser applicationUser);
     }
 }

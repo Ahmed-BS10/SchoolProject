@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,7 +27,7 @@ namespace SchoolProject.Services.Auth
             _userRefreshTokens=new ConcurrentDictionary<string,RefreshToken>();
         }
 
-        public async Task<JWTAuthResult> CreateTokenAsync(ApplicationUser applicationUser )
+        public JWTAuthResult CreateTokenAsync(ApplicationUser applicationUser )
         {
            
             // Claims Token
@@ -51,18 +52,45 @@ namespace SchoolProject.Services.Auth
 
 
             // Create Token
-            var AccessToken = new JwtSecurityToken(
+            var jwtToken = new JwtSecurityToken(
                 issuer:_jwtSettings.Issuer,
                 audience:_jwtSettings.Issuer,
                 claims:_claims,
-                expires : DateTime.UtcNow.AddMinutes(2),
+                expires : DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenExpire),
                 signingCredentials : signincred
                 );
 
 
-            var token = new JwtSecurityTokenHandler().WriteToken(AccessToken);
+            var token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+           var refreshToken = GetRefreshToken(applicationUser.UserName);
+            var _jwtToken = new JWTAuthResult()
+            {
+                AccessToken = token,
+                RefreshToken = refreshToken
+            };
+          return _jwtToken;
+        }
 
-          return token;
+        private RefreshToken GetRefreshToken(string userName)
+        {
+            var refreshToken = new RefreshToken()
+            {
+                ExpireAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiration),
+                UserName = userName,
+                AccessRefreshTokenToken = GenerateRefreshToken()
+            };
+            _userRefreshTokens.AddOrUpdate(refreshToken.UserName, refreshToken, (s, t) => refreshToken);
+
+            return refreshToken;
+        }
+
+        private string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            var randomNumberGererate = RandomNumberGenerator.Create();
+            randomNumberGererate.GetBytes(randomNumber);
+
+            return Convert.ToBase64String(randomNumber);
         }
     }
 }

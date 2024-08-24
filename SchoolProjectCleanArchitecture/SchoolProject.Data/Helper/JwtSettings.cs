@@ -11,7 +11,7 @@ namespace SchoolProject.Data.Helper
         public string Key { get; set; }
         public string Issuer { get; set; }
         public string Audience { get; set; }
-        public bool LifeTime { get; set; }
-        //public double RefreshTokenExpiration { get; set; }
+        public int AccessTokenExpire { get; set; }
+        public int RefreshTokenExpiration { get; set; }
     }
 }

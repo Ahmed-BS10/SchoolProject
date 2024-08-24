@@ -41,7 +41,7 @@ namespace SchoolProject.Core.Features.Authentication.Commmand.Handler
             if (user == null) return NotFound<JWTAuthResult>();
             var signInResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password,true);
             if (!signInResult.Succeeded) return BadRequest<JWTAuthResult>();
-            var accessToken = await _authenticationServices.CreateTokenAsync(user);
+            var accessToken =  _authenticationServices.CreateTokenAsync(user);
             return Success(accessToken);
         }
         #endregion

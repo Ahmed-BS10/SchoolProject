@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SchoolManagment.Data.Entities.Identity;
 using SchoolProject.Data.Entities;
 using SchoolProject.Data.Entities.Identity;
 using System;
@@ -15,6 +16,7 @@ namespace SchoolProject.Infrastrcture.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContextOptions) :base(dbContextOptions) { }
         
+        public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
         public DbSet<ApplicationUser> Users {  get; set; }
         public DbSet<Student> students { get; set; }
         public DbSet<Subjects> subjects { get; set; }
