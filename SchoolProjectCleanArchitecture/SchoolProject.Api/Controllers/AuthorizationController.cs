@@ -10,7 +10,7 @@ using static SchoolProject.Data.AppMetaData.Route;
 namespace SchoolProject.Api.Controllers
 {
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = Roles.Admin)]
     public class AuthorizationController : AppControllerBase
     {
         public AuthorizationController(IMediator mediator) : base(mediator)
@@ -18,9 +18,17 @@ namespace SchoolProject.Api.Controllers
         }
 
         [HttpPost(AuthorizationRouting.AddRole)]
-        public async Task<IActionResult> AddRole(string roleName)
+        public async Task<IActionResult> Add(string roleName)
         {
             var resonse = await _mediator.Send(new AddRoleCommand(roleName));
+            return NewResult(resonse);
+        }
+
+
+        [HttpPut(AuthorizationRouting.EditRole)]
+        public async Task<IActionResult> Edit(EditRoleCommand command)
+        {
+            var resonse = await _mediator.Send(command);
             return NewResult(resonse);
         }
     }

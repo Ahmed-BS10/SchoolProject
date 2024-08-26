@@ -17,7 +17,9 @@ namespace SchoolProject.Data.AppMetaData
         {
             public const string Prefix = $"{Rule}Authorization/";
             public const string AddRole = $"{Prefix}Role/Create";
-            
+            public const string EditRole = $"{Prefix}Role/Edit";
+
+
 
         }
 

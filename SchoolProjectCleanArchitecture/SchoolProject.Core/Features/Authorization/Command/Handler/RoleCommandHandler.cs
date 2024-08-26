@@ -13,6 +13,7 @@ namespace SchoolProject.Core.Features.Authorization.Command.Handler
 {
     public class RoleCommandHandler : ResponseHandler,
                                      IRequestHandler<AddRoleCommand, Response<string>>
+                                     ,IRequestHandler<EditRoleCommand, Response<string>>
     {
         #region Fields
         private readonly IAuthorizationServices _authorizationServices;
@@ -33,6 +34,16 @@ namespace SchoolProject.Core.Features.Authorization.Command.Handler
 
             var result =  await _authorizationServices.AddRoleAsync(request.RoleName);
             return result == "Success" ? Success("") : BadRequest<string>("Add Failed");
+
+        }
+
+        public async Task<Response<string>> Handle(EditRoleCommand request, CancellationToken cancellationToken)
+        {
+            var roleresult = await _authorizationServices.EditRoleAsync(request.Id, request.Name);
+            if (roleresult == "Not Found") return NotFound<string>();
+            else if (roleresult =="Success") return Success("");
+
+            return BadRequest<string>(roleresult);
 
         }
         #endregion
