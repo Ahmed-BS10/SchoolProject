@@ -12,6 +12,7 @@ namespace SchoolProject.Infrastrcture
         {
             services.AddTransient<IStudentRepository , StudentRepository>();
             services.AddTransient<IDepartmentRepoistory, DepartmentRepository>();
+            services.AddTransient<IRefreshTokenRepoistory, RefreshTokenRepoistory>();
             return services;
         }
     }

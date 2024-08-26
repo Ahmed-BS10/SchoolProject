@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolProject.Infrastrcture.Data;
 
@@ -11,9 +12,11 @@ using SchoolProject.Infrastrcture.Data;
 namespace SchoolProject.Infrastrcture.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240826085911_editUserRefreshToken")]
+    partial class editUserRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -525,11 +528,9 @@ namespace SchoolProject.Infrastrcture.Migrations
 
             modelBuilder.Entity("SchoolManagment.Data.Entities.Identity.UserRefreshToken", b =>
                 {
-                    b.HasOne("SchoolProject.Data.Entities.Identity.ApplicationUser", "ApplicationUser")
+                    b.HasOne("SchoolProject.Data.Entities.Identity.ApplicationUser", null)
                         .WithMany("UserRefreshTokens")
                         .HasForeignKey("ApplicationUserId");
-
-                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("SchoolProject.Data.Entities.Instructor", b =>

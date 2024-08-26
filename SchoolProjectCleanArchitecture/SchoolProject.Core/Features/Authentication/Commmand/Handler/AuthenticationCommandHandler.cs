@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace SchoolProject.Core.Features.Authentication.Commmand.Handler
 {
     public class AuthenticationCommandHandler : ResponseHandler,
-                                                IRequestHandler<SignCommand, Response<JWTAuthResult>>
+                                                IRequestHandler<SignCommand, Response<string>>
     {
 
         #region Field
@@ -35,13 +35,13 @@ namespace SchoolProject.Core.Features.Authentication.Commmand.Handler
         #endregion
 
         #region Funcation Handler
-        public async Task<Response<JWTAuthResult>> Handle(SignCommand request, CancellationToken cancellationToken)
+        public async Task<Response<string>> Handle(SignCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
-            if (user == null) return NotFound<JWTAuthResult>();
+            if (user == null) return NotFound<string>();
             var signInResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password,true);
-            if (!signInResult.Succeeded) return BadRequest<JWTAuthResult>();
-            var accessToken =  _authenticationServices.CreateTokenAsync(user);
+            if (!signInResult.Succeeded) return BadRequest<string>();
+            var accessToken = await  _authenticationServices.GenerateJWTToken(user);
             return Success(accessToken);
         }
         #endregion

@@ -1,8 +1,11 @@
-﻿using SchoolProject.Data.Entities.Identity;
+﻿using Microsoft.IdentityModel.Tokens;
+using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Data.Helper;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +13,13 @@ namespace SchoolProject.Services.Auth
 {
     public interface IAuthenticationServices 
     {
-        JWTAuthResult CreateTokenAsync(ApplicationUser applicationUser);
+        //Task< JWTAuthResult> CreateTokenAsync(ApplicationUser applicationUser);
+        //Task<JWTAuthResult> GetRefreshTokenAsync(string accessToken , string refreshToken);
+        //Task <string> ValidateToken(string accessToken);
+
+         Task<string> GenerateJWTToken(ApplicationUser user);
+        
+
+
     }
 }

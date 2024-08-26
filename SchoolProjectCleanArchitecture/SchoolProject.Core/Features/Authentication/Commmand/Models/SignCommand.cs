@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SchoolProject.Core.Features.Authentication.Commmand.Models
 {
-    public class SignCommand : IRequest<Response<JWTAuthResult>>
+    public class SignCommand : IRequest<Response<string>>
     {
         [Required]
         public string UserName { get; set; }
