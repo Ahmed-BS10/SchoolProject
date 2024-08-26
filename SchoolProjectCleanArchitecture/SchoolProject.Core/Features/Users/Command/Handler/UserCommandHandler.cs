@@ -59,6 +59,9 @@ namespace SchoolProject.Core.Features.Users.Command.Handler
             // create
              var createResult = await _userManager.CreateAsync(userMapper, request.Password);
             //Succeeded
+
+            //Add Default Role
+            await _userManager.AddToRoleAsync(userMapper, "User");
             if (createResult.Succeeded)
                 return Created("Add");
             //Failed

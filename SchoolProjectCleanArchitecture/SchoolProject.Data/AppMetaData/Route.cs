@@ -13,6 +13,14 @@ namespace SchoolProject.Data.AppMetaData
         public const string Rule  = $"{root}/{version}/";
 
 
+        public static class AuthorizationRouting
+        {
+            public const string Prefix = $"{Rule}Authorization/";
+            public const string AddRole = $"{Prefix}AddRole";
+            
+
+        }
+
         public static class StudentRouting
         {
             public const string Prefix = $"{Rule}Student/";

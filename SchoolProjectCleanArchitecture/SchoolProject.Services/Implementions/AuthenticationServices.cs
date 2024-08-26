@@ -4,6 +4,7 @@ using SchoolManagment.Data.Entities.Identity;
 using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Data.Helper;
 using SchoolProject.Infrastrcture.Abstracts;
+using SchoolProject.Services.Abstracts;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -14,20 +15,20 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SchoolProject.Services.Auth
+namespace SchoolProject.Services.Implementions
 {
     public class AuthenticationServices : IAuthenticationServices
     {
         private readonly IRefreshTokenRepoistory _refreshTokenRepoistory;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly JwtSettings _jwtSettings;
-       // private readonly ConcurrentDictionary<string,RefreshToken> _userRefreshTokens;
+        // private readonly ConcurrentDictionary<string,RefreshToken> _userRefreshTokens;
         public AuthenticationServices(UserManager<ApplicationUser> userManager, JwtSettings jwtSettings, IRefreshTokenRepoistory refreshTokenRepoistory)
         {
-            _userManager=userManager;
-            _jwtSettings=jwtSettings;
-           // _userRefreshTokens=new ConcurrentDictionary<string, RefreshToken>();
-            _refreshTokenRepoistory=refreshTokenRepoistory;
+            _userManager = userManager;
+            _jwtSettings = jwtSettings;
+            // _userRefreshTokens=new ConcurrentDictionary<string, RefreshToken>();
+            _refreshTokenRepoistory = refreshTokenRepoistory;
         }
         //public async Task <JWTAuthResult> CreateTokenAsync(ApplicationUser applicationUser )
         //{
@@ -293,7 +294,7 @@ namespace SchoolProject.Services.Auth
                 signingCredentials: signincred
                 );
             var accessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken);
-            
+
 
             return accessToken;
         }

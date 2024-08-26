@@ -4,7 +4,7 @@ using SchoolProject.Core.Bases;
 using SchoolProject.Core.Features.Authentication.Commmand.Models;
 using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Data.Helper;
-using SchoolProject.Services.Auth;
+using SchoolProject.Services.Abstracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
