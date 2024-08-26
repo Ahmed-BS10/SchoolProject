@@ -12,9 +12,8 @@ namespace SchoolProject.Core.Features.Authentication.Commmand.Models
 {
     public class SignCommand : IRequest<Response<string>>
     {
-        [Required]
+        
         public string UserName { get; set; }
-        [Required]
         public string Password { get; set; }
     }
 }

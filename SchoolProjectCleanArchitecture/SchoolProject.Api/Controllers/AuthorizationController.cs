@@ -1,13 +1,16 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Api.Base;
 using SchoolProject.Core.Features.Authorization.Command.Modle;
+using SchoolProject.Infrastrcture.Seeder;
 using static SchoolProject.Data.AppMetaData.Route;
 
 namespace SchoolProject.Api.Controllers
 {
     [ApiController]
+    [Authorize]
     public class AuthorizationController : AppControllerBase
     {
         public AuthorizationController(IMediator mediator) : base(mediator)

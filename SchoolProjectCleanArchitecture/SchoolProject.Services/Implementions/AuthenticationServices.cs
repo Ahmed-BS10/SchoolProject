@@ -273,11 +273,11 @@ namespace SchoolProject.Services.Implementions
             #region Role
 
 
-            //var roles = await _userManager.GetRolesAsync(user);
-            //foreach (var role in roles)
-            //{
-            //    claims.Add(new Claim(ClaimTypes.Role, role));
-            //}
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                _claims.Add(new Claim(ClaimTypes.Role, role));
+            }
             #endregion
 
 
@@ -288,9 +288,9 @@ namespace SchoolProject.Services.Implementions
             // Create Token
             var jwtToken = new JwtSecurityToken(
                 issuer: _jwtSettings.Issuer,
-                audience: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
                 claims: _claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenExpire),
+                expires: DateTime.UtcNow.AddDays(_jwtSettings.AccessTokenExpire),
                 signingCredentials: signincred
                 );
             var accessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken);

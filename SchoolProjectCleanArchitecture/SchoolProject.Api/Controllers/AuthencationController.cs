@@ -1,13 +1,15 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Api.Base;
 using SchoolProject.Core.Features.Authentication.Commmand.Models;
+using SchoolProject.Infrastrcture.Seeder;
 using static SchoolProject.Data.AppMetaData.Route;
 
 namespace SchoolProject.Api.Controllers
 {
-    [Route("api/[controller]")]
+    
     [ApiController]
     public class AuthencationController : AppControllerBase
     {
