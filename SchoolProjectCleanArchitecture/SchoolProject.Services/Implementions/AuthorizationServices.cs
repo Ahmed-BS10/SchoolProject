@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SchoolProject.Data.DTO;
 using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Services.Abstracts;
 using System;
@@ -19,9 +20,10 @@ namespace SchoolProject.Services.Implementions
         #endregion
 
         #region Constrctuor(s)
-        public AuthorizationServices(RoleManager<IdentityRole> roleManager)
+        public AuthorizationServices(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _roleManager=roleManager;
+            _userManager=userManager;
         }
 
         #endregion
@@ -83,6 +85,37 @@ namespace SchoolProject.Services.Implementions
 
             return roles;
         }
+
+        public async Task<GetUserWithRolesDto> GetUserWithRolesAsync(ApplicationUser user)
+        {
+            var respones = new GetUserWithRolesDto();
+            var roles = new List<Roles>();
+
+          
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var rolesManager = await _roleManager.Roles.ToListAsync();
+
+            foreach (var _role in rolesManager)
+            {
+                var role = new Roles()
+                {
+                    Id = _role.Id,
+                    RoleName = _role.Name
+                };
+
+                if (userRoles.Contains(_role.Name))
+                {
+                    roles.Add(role);
+                }
+            }
+
+
+            respones.Id = user.Id;
+            respones.roles = roles;
+
+            return respones;
+        }
+
         public async Task<bool> IsRoleExistByIdAsync(string id)
         {
            var role = await _roleManager.FindByIdAsync(id);
@@ -99,7 +132,7 @@ namespace SchoolProject.Services.Implementions
             return await _roleManager.RoleExistsAsync(roleName);
         }
 
-
+      
         #endregion
     }
 }

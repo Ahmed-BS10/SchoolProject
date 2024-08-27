@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SchoolProject.Data.DTO;
+using SchoolProject.Data.Entities.Identity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,5 +19,6 @@ namespace SchoolProject.Services.Abstracts
         Task <bool> IsRoleExistByIdAsync(string id);
         Task<string> EditRoleAsync(string id, string name);
         Task<string> DeleteRoleAsync(string id);
+        Task<GetUserWithRolesDto> GetUserWithRolesAsync(ApplicationUser user);
     }
 }

@@ -57,6 +57,8 @@ namespace SchoolProject.Data.AppMetaData
             public const string SignIn = $"{Prefix}SignIn";
             public const string GetById = $"{Prefix}Role/{"Id"}";
             public const string GetList = $"{Prefix}Role/GetList";
+            public const string GetUserWithRoles = $"{Prefix}GetUserWithRoles";
+
 
 
         }

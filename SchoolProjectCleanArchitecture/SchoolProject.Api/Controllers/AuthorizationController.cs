@@ -18,6 +18,13 @@ namespace SchoolProject.Api.Controllers
         {
         }
 
+        [HttpGet(Authencation.GetUserWithRoles)]
+        public async Task<IActionResult> GetUserWithRoles(string id)
+        {
+            var response = await _mediator.Send(new GetUserWithRolesQuery(id));
+            return NewResult(response);
+        }
+
         [HttpGet(Authencation.GetList)]
         public async Task<IActionResult> GetList()
         {
