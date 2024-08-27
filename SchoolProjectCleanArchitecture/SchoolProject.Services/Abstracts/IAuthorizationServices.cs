@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -9,9 +10,12 @@ namespace SchoolProject.Services.Abstracts
 {
     public interface IAuthorizationServices
     {
-        Task<string> AddRoleAsync(string RoleName);
-
-       Task <bool> IsRoleExist(string RoleName);
+        Task<IdentityRole> GetRoleByIdAsync(string Id);
+        Task<IEnumerable<IdentityRole>> GetRoleList();
+        Task<string> AddRoleAsyncAsync(string RoleName);
+        Task <bool> IsRoleExistByNameAsync(string RoleName);
+        Task <bool> IsRoleExistByIdAsync(string id);
         Task<string> EditRoleAsync(string id, string name);
+        Task<string> DeleteRoleAsync(string id);
     }
 }

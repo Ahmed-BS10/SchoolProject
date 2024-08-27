@@ -18,6 +18,7 @@ namespace SchoolProject.Data.AppMetaData
             public const string Prefix = $"{Rule}Authorization/";
             public const string AddRole = $"{Prefix}Role/Create";
             public const string EditRole = $"{Prefix}Role/Edit";
+            public const string DeleteRole = $"{Prefix}Role/Delete/{"id"}";
 
 
 
@@ -54,8 +55,8 @@ namespace SchoolProject.Data.AppMetaData
         {
             public const string Prefix = $"{Rule}Authencation/";
             public const string SignIn = $"{Prefix}SignIn";
-
-
+            public const string GetById = $"{Prefix}Role/{"Id"}";
+            public const string GetList = $"{Prefix}Role/GetList";
 
 
         }

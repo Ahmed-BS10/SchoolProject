@@ -14,6 +14,7 @@ namespace SchoolProject.Core.Features.Authorization.Command.Handler
     public class RoleCommandHandler : ResponseHandler,
                                      IRequestHandler<AddRoleCommand, Response<string>>
                                      ,IRequestHandler<EditRoleCommand, Response<string>>
+                                     ,IRequestHandler<DeleteRoleCommand, Response<string>>
     {
         #region Fields
         private readonly IAuthorizationServices _authorizationServices;
@@ -29,10 +30,10 @@ namespace SchoolProject.Core.Features.Authorization.Command.Handler
         #region Funcation Handler
         public async Task<Response<string>> Handle(AddRoleCommand request, CancellationToken cancellationToken)
         {
-            var IsroleExist = await _authorizationServices.IsRoleExist(request.RoleName);
+            var IsroleExist = await _authorizationServices.IsRoleExistByNameAsync(request.RoleName);
             if (IsroleExist == true) return BadRequest<string>("Role Is Exist");
 
-            var result =  await _authorizationServices.AddRoleAsync(request.RoleName);
+            var result =  await _authorizationServices.AddRoleAsyncAsync(request.RoleName);
             return result == "Success" ? Success("") : BadRequest<string>("Add Failed");
 
         }
@@ -45,6 +46,20 @@ namespace SchoolProject.Core.Features.Authorization.Command.Handler
 
             return BadRequest<string>(roleresult);
 
+        }
+
+        public async Task<Response<string>> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
+        {
+            /// var IsRole = await _authorizationServices.IsRoleExistById(request.id);
+
+            var roleResult = await _authorizationServices.DeleteRoleAsync(request.id);
+            if (roleResult == "Not Found") return NotFound<string>();
+
+            else if (roleResult == "role Use") return UnprocessableEntity<string>("Role Is already Used");
+
+            else if (roleResult == "Success") return Success("");
+
+            return BadRequest<string>();
         }
         #endregion
 

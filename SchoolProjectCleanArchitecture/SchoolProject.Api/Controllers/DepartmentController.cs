@@ -6,7 +6,7 @@ using SchoolProject.Core.Features.Departments.Query.Models;
 
 namespace SchoolProject.Api.Controllers
 {
-    [Route("api/[controller]")]
+   
     [ApiController]
     public class DepartmentController : AppControllerBase
     {

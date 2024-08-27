@@ -10,13 +10,17 @@ using static SchoolProject.Data.AppMetaData.Route;
 
 namespace SchoolProject.Api.Controllers
 {
-    [Route("api/[controller]")]
+  
     [ApiController]
     public class ApplicationUserController : AppControllerBase
     {
+        #region Constrcutor(s)
         public ApplicationUserController(IMediator mediator) : base(mediator)
         {
         }
+        #endregion
+
+        #region Endpoint
 
         [HttpPost(UserRouting.Create)]
         public async Task<IActionResult> Create(AddUserCommand command)
@@ -27,7 +31,7 @@ namespace SchoolProject.Api.Controllers
 
 
         [HttpGet(UserRouting.Pagination)]
-        public async Task<IActionResult> PaginateList([FromQuery]GetUserPaginationListQuery query)
+        public async Task<IActionResult> PaginateList([FromQuery] GetUserPaginationListQuery query)
         {
             var response = await _mediator.Send(query);
             return Ok(response);
@@ -60,8 +64,11 @@ namespace SchoolProject.Api.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             var respones = await _mediator.Send(new DeleteUserCommand(id));
-            return NewResult(respones);        
+            return NewResult(respones);
         }
+
+        #endregion
+
 
     }
 }

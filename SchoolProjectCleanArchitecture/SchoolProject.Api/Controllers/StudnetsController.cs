@@ -20,7 +20,6 @@ namespace SchoolProject.Api.Controllers
         }
         #endregion
 
-
         #region EndPoint
 
         [AllowAnonymous]
@@ -67,7 +66,7 @@ namespace SchoolProject.Api.Controllers
         }
         #endregion
 
-
+        #region Endpoint
         [HttpPut(StudentRouting.Edit)]
         public async Task<IActionResult> Edit(EditStudentCommand command)
         {
@@ -83,6 +82,8 @@ namespace SchoolProject.Api.Controllers
             var response = await _mediator.Send(new DeleteStudentCommand(id));
             return NewResult(response);
         }
+        #endregion
+
 
     }
 } 
