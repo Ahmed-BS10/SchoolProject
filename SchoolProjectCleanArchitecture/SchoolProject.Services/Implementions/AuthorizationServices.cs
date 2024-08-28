@@ -9,6 +9,7 @@ using SchoolProject.Services.Abstracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -76,6 +77,37 @@ namespace SchoolProject.Services.Implementions
             return _erros;
 
         }
+
+        public async Task<string> EditUserClaimsAsync(ManagerUserWithClaimDto request)
+        {
+            var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var user = await _userManager.FindByIdAsync(request.Id);
+                if (user == null) return "UserIsNull";
+
+                var userClaims = await _userManager.GetClaimsAsync(user);
+                var resultDelete = await _userManager.RemoveClaimsAsync(user, userClaims);
+                if (!resultDelete.Succeeded) return "FailedToRemoveOldClaims";
+
+                var claims = request.claimsUsers.Where(x => x.value == true).Select(x => new Claim(x.type, x.value.ToString()));
+                var resultAdd = await _userManager.AddClaimsAsync(user, claims);
+                if (!resultAdd.Succeeded) return "FailedToAddNewRoles";
+                await transaction.CommitAsync();
+                return "Success";
+            }
+
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return "FailedToUpdateUserRoles";
+            }
+
+            
+
+        }
+
         public async Task<string> EditUserRolesAsync(EditUserRolesDto request)
         {
             var transaction = await _context.Database.BeginTransactionAsync();

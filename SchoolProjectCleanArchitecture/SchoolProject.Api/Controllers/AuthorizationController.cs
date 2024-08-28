@@ -18,36 +18,43 @@ namespace SchoolProject.Api.Controllers
         {
         }
 
-
-        [HttpGet("getClaims")]
-        public async Task<IActionResult> Ckaims(string id)
-        {
-            var response = await _mediator.Send( new ManagerUserClaimQuery(id));
-            return NewResult(response);
-        }
-
-        [HttpPut("editrr")]
-        public async Task<IActionResult> SSSS([FromBody] EditUserRolesCommand command)
+        [HttpPut("aa")]
+        public async Task<IActionResult> EditUserClaims(EditUserClaimCommand command)
         {
             var response = await _mediator.Send(command);
             return NewResult(response);
         }
 
-        [HttpGet(Authencation.GetUserWithRoles)]
+
+        [HttpGet(AuthorizationRouting.UserClaims)]
+        public async Task<IActionResult> GetUserClaims(string id)
+        {
+            var response = await _mediator.Send( new ManagerUserClaimQuery(id));
+            return NewResult(response);
+        }
+
+        [HttpPut(AuthorizationRouting.EditUserRoles)]
+        public async Task<IActionResult> EditUserRoles([FromBody] EditUserRolesCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return NewResult(response);
+        }
+
+        [HttpGet(AuthorizationRouting.GetUserWithRoles)]
         public async Task<IActionResult> GetUserWithRoles(string id)
         {
             var response = await _mediator.Send(new GetUserWithRolesQuery(id));
             return NewResult(response);
         }
 
-        [HttpGet(Authencation.GetList)]
+        [HttpGet(AuthorizationRouting.GetList)]
         public async Task<IActionResult> GetList()
         {
             var response = await _mediator.Send(new GeyRoleListQuery());
             return NewResult(response);
         }
 
-        [HttpGet(Authencation.GetById)]
+        [HttpGet(AuthorizationRouting.GetById)]
         public async Task<IActionResult> GetById(string id)
         {
             var response = await _mediator.Send(new GeyRoleByIdQuery(id));
