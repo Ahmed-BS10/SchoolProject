@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Data.DTO;
 using SchoolProject.Data.Entities.Identity;
+using SchoolProject.Infrastrcture.Data;
 using SchoolProject.Services.Abstracts;
 using System;
 using System.Collections.Generic;
@@ -17,13 +18,15 @@ namespace SchoolProject.Services.Implementions
         #region Fields
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
         #endregion
 
         #region Constrctuor(s)
-        public AuthorizationServices(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        public AuthorizationServices(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _roleManager=roleManager;
             _userManager=userManager;
+            _context=context;
         }
 
         #endregion
@@ -72,6 +75,33 @@ namespace SchoolProject.Services.Implementions
             return _erros;
 
         }
+        public async Task<string> EditUserRolesAsync(EditUserRolesDto request)
+        {
+            var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var user = await _userManager.FindByIdAsync(request.Id);
+
+                if (user == null)
+                    return "UserIsNull";
+
+                var userRole = await _userManager.GetRolesAsync(user);
+                var resultDelete = await _userManager.RemoveFromRolesAsync(user, userRole);
+                if (!resultDelete.Succeeded) return "FailedToRemoveOldRoles";
+
+                var selectRoles = request.rolesUsers.Where(x => x.HasRole == true).Select(x=> x.RoleName);
+                var resultAdd = await _userManager.AddToRolesAsync(user, selectRoles);
+                if (!resultAdd.Succeeded) return "FailedToAddNewRoles";
+                await transaction.CommitAsync();
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return "FailedToUpdateUserRoles";
+            }
+
+        }
         public async Task<IdentityRole> GetRoleByIdAsync(string Id)
         {
             
@@ -85,7 +115,6 @@ namespace SchoolProject.Services.Implementions
 
             return roles;
         }
-
         public async Task<GetUserWithRolesDto> GetUserWithRolesAsync(ApplicationUser user)
         {
             var respones = new GetUserWithRolesDto();
@@ -115,7 +144,6 @@ namespace SchoolProject.Services.Implementions
 
             return respones;
         }
-
         public async Task<bool> IsRoleExistByIdAsync(string id)
         {
            var role = await _roleManager.FindByIdAsync(id);

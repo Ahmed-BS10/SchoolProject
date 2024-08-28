@@ -18,6 +18,14 @@ namespace SchoolProject.Api.Controllers
         {
         }
 
+
+        [HttpPut("editrr")]
+        public async Task<IActionResult> SSSS([FromBody] EditUserRolesCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return NewResult(response);
+        }
+
         [HttpGet(Authencation.GetUserWithRoles)]
         public async Task<IActionResult> GetUserWithRoles(string id)
         {

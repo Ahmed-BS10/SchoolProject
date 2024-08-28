@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SchoolProject.Data.DTO;
 
 
-    public class GetUserWithRolesDto
+public class GetUserWithRolesDto
     {
         public string Id { get; set; }
         public List<Roles> roles { get; set; }

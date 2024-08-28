@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using SchoolProject.Core.Bases;
 using SchoolProject.Core.Features.Authorization.Command.Modle;
+using SchoolProject.Core.Resources;
+using SchoolProject.Data.DTO;
+using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Services.Abstracts;
 using System;
 using System.Collections.Generic;
@@ -15,15 +18,18 @@ namespace SchoolProject.Core.Features.Authorization.Command.Handler
                                      IRequestHandler<AddRoleCommand, Response<string>>
                                      ,IRequestHandler<EditRoleCommand, Response<string>>
                                      ,IRequestHandler<DeleteRoleCommand, Response<string>>
+                                     ,IRequestHandler<EditUserRolesCommand, Response<string>>
     {
         #region Fields
         private readonly IAuthorizationServices _authorizationServices;
+        private readonly UserManager<ApplicationUser> _userManager;
         #endregion
 
         #region Constrctuor(s)
-        public RoleCommandHandler(IAuthorizationServices authorizationServices)
+        public RoleCommandHandler(IAuthorizationServices authorizationServices, UserManager<ApplicationUser> userManager)
         {
             _authorizationServices=authorizationServices;
+            _userManager=userManager;
         }
         #endregion
 
@@ -37,7 +43,6 @@ namespace SchoolProject.Core.Features.Authorization.Command.Handler
             return result == "Success" ? Success("") : BadRequest<string>("Add Failed");
 
         }
-
         public async Task<Response<string>> Handle(EditRoleCommand request, CancellationToken cancellationToken)
         {
             var roleresult = await _authorizationServices.EditRoleAsync(request.Id, request.Name);
@@ -47,7 +52,6 @@ namespace SchoolProject.Core.Features.Authorization.Command.Handler
             return BadRequest<string>(roleresult);
 
         }
-
         public async Task<Response<string>> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
         {
             /// var IsRole = await _authorizationServices.IsRoleExistById(request.id);
@@ -61,6 +65,23 @@ namespace SchoolProject.Core.Features.Authorization.Command.Handler
 
             return BadRequest<string>();
         }
+        public async Task<Response<string>> Handle(EditUserRolesCommand request, CancellationToken cancellationToken)
+        {
+            var result = await _authorizationServices.EditUserRolesAsync(request);
+            switch(result)
+            {
+                case "UserIsNull": return NotFound<string>("UserIsNull");
+                case "InvalidRole": return BadRequest<string>("InvalidRole");
+                case "FailedToRemoveOldRoles": return BadRequest<string>("FailedToRemoveOldRoles");
+                case "FailedToAddNewRoles": return BadRequest<string>("FailedToAddNewRoles");
+                case "FailedToUpdateUserRoles": return BadRequest<string>("FailedToUpdateUserRoles");
+            }
+
+            return Success(result);
+            
+        }
+
+
         #endregion
 
     }

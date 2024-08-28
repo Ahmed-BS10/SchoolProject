@@ -48,7 +48,6 @@ namespace SchoolProject.Core.Features.Authorization.Query.Handler
             var roleMapper = _mapper.Map<GeyRoleByIdQueryResponse>(role);
             return Success<GeyRoleByIdQueryResponse>(roleMapper, "Get Successed");
         }
-
         public async Task<Response<IEnumerable<GeyRoleListQueryResponse>>> Handle(GeyRoleListQuery request, CancellationToken cancellationToken)
         {
             var roles = await _authorizationServices.GetRoleList();
@@ -57,7 +56,6 @@ namespace SchoolProject.Core.Features.Authorization.Query.Handler
             var rolesMapper = _mapper.Map<IEnumerable<GeyRoleListQueryResponse>>(roles);
             return Success<IEnumerable<GeyRoleListQueryResponse>>(rolesMapper , "Success Get All Item");
         }
-
         public async Task<Response<GetUserWithRolesDto>> Handle(GetUserWithRolesQuery request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByIdAsync(request.id);
