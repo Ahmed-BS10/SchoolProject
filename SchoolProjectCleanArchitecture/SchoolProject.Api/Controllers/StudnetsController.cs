@@ -5,12 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Api.Base;
 using SchoolProject.Core.Features.Students.Commands.Moudles;
 using SchoolProject.Core.Features.Students.Queries.Models;
+using SchoolProject.Data.DTO;
 using static SchoolProject.Data.AppMetaData.Route;
 
 namespace SchoolProject.Api.Controllers
 {
-    [Authorize]
+    
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class StudnetsController : AppControllerBase
     {
         #region Constrcutor(s)
@@ -22,7 +24,6 @@ namespace SchoolProject.Api.Controllers
 
         #region EndPoint
 
-        [AllowAnonymous]
         [HttpGet(StudentRouting.Pagination)]
         public async Task<IActionResult> GetPaginateList([FromQuery] GetStudentPaginateListQuery query)
         {
@@ -31,7 +32,7 @@ namespace SchoolProject.Api.Controllers
             if (response == null) return BadRequest("Help");
             return Ok(response);
         }
-
+        [Authorize(policy: "CreateStudent")]
         [HttpGet(StudentRouting.List)]
         public async Task<IActionResult> GetStudnetList()
         {

@@ -271,8 +271,6 @@ namespace SchoolProject.Services.Implementions
             };
 
             #region Role
-
-
             var roles = await _userManager.GetRolesAsync(user);
             foreach (var role in roles)
             {
@@ -280,6 +278,10 @@ namespace SchoolProject.Services.Implementions
             }
             #endregion
 
+            #region UserClaims
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            _claims.AddRange(userClaims);
+            #endregion
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
             var signincred = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

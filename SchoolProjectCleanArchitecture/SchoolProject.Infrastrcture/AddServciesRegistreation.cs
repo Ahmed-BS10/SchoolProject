@@ -103,6 +103,17 @@ namespace SchoolProject.Infrastrcture
             });
 
 
+            services.AddAuthorization(option =>
+
+            {
+                option.AddPolicy("CreateStudent", policy =>
+
+                policy.RequireClaim("Create", "True")
+                
+                );
+            });
+            
+
             return services;
         }
 

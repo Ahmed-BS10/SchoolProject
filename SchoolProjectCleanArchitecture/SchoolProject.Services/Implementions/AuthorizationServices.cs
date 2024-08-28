@@ -77,7 +77,6 @@ namespace SchoolProject.Services.Implementions
             return _erros;
 
         }
-
         public async Task<string> EditUserClaimsAsync(ManagerUserWithClaimDto request)
         {
             var transaction = await _context.Database.BeginTransactionAsync();
@@ -107,7 +106,6 @@ namespace SchoolProject.Services.Implementions
             
 
         }
-
         public async Task<string> EditUserRolesAsync(EditUserRolesDto request)
         {
             var transaction = await _context.Database.BeginTransactionAsync();
@@ -154,7 +152,7 @@ namespace SchoolProject.Services.Implementions
             var roles = new List<Roles>();
 
           
-            var userRoles = await _userManager.GetRolesAsync(user);
+            //var userRoles = await _userManager.GetRolesAsync(user);
             var rolesManager = await _roleManager.Roles.ToListAsync();
 
             foreach (var _role in rolesManager)
@@ -165,7 +163,7 @@ namespace SchoolProject.Services.Implementions
                     RoleName = _role.Name
                 };
 
-                if (userRoles.Contains(_role.Name))
+                if (await _userManager.IsInRoleAsync(user, _role.Name))
                 {
                     roles.Add(role);
                 }
