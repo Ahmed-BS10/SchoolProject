@@ -19,6 +19,13 @@ namespace SchoolProject.Api.Controllers
         }
 
 
+        [HttpGet("getClaims")]
+        public async Task<IActionResult> Ckaims(string id)
+        {
+            var response = await _mediator.Send( new ManagerUserClaimQuery(id));
+            return NewResult(response);
+        }
+
         [HttpPut("editrr")]
         public async Task<IActionResult> SSSS([FromBody] EditUserRolesCommand command)
         {

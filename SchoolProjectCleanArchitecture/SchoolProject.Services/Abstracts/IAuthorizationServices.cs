@@ -21,5 +21,7 @@ namespace SchoolProject.Services.Abstracts
         Task<string> DeleteRoleAsync(string id);
         Task<GetUserWithRolesDto> GetUserWithRolesAsync(ApplicationUser user);
         Task<string> EditUserRolesAsync(EditUserRolesDto request);
+        Task<ManagerUserWithClaimDto> ManageUserClaimsAsync(ApplicationUser user);
+
     }
 }

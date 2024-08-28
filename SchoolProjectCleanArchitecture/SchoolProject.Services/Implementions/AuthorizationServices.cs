@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Data.DTO;
 using SchoolProject.Data.Entities.Identity;
+using SchoolProject.Data.Helper;
 using SchoolProject.Infrastrcture.Data;
 using SchoolProject.Services.Abstracts;
 using System;
@@ -159,8 +160,36 @@ namespace SchoolProject.Services.Implementions
 
             return await _roleManager.RoleExistsAsync(roleName);
         }
+        public async Task<ManagerUserWithClaimDto> ManageUserClaimsAsync(ApplicationUser user)
+        {
+            var response = new ManagerUserWithClaimDto();
+            var claimList = new List<ClaimsUser>();
+            response.Id = user.Id;
+            // Get User Claims
+            var userClaims = await _userManager.GetClaimsAsync(user);
 
-      
+            foreach (var claimItme in ClaimsStore.claims)
+            {
+                var claimUser = new ClaimsUser();
+                claimUser.type = claimItme.Type;
+                if(userClaims.Any(x => x.Type == claimItme.Type))
+                {
+                    claimUser.value = true;
+                }
+
+                else
+                {
+                    claimUser.value = false;
+                }
+
+                claimList.Add(claimUser);
+               
+            }
+            response.claimsUsers = claimList;
+            return response;
+        }
+
+
         #endregion
     }
 }

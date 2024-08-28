@@ -10,4 +10,4 @@ public partial class RoleProfile
         CreateMap<IdentityRole, GeyRoleListQueryResponse>();
         //.ForMember(dest => dest.Id , opt => opt.MapFrom(src => src.))
     }
-}
+}       
