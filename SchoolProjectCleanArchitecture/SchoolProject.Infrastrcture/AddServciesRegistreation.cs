@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using SchoolProject.Data.Entities;
 using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Data.Helper;
 using SchoolProject.Infrastrcture.Data;
@@ -14,7 +13,6 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 
 namespace SchoolProject.Infrastrcture
 {
@@ -27,6 +25,10 @@ namespace SchoolProject.Infrastrcture
             var jwtSettings = new JwtSettings();
             configuration.GetSection("Jwt").Bind(jwtSettings);
             services.AddSingleton(jwtSettings);
+            
+            var mailSetting = new MailSetting();
+            configuration.GetSection("MailSetting").Bind(mailSetting);
+            services.AddSingleton(mailSetting);
 
             // Add Identity
             services.AddIdentity<ApplicationUser, IdentityRole>(option =>
