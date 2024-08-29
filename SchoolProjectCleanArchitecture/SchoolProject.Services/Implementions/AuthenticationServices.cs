@@ -300,6 +300,19 @@ namespace SchoolProject.Services.Implementions
 
             return accessToken;
         }
+        public async Task<string> ConfirmEmail(string userId, string code)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null || code == null)
+                return "UserNotFount";
+
+            var confirmEmail = await _userManager.ConfirmEmailAsync(user, code);
+
+            if (!confirmEmail.Succeeded)
+                return "ErrorWhileConfirmingEmail";
+
+            return "Success";
+        }
 
     }
 }

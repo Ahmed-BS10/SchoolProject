@@ -63,7 +63,7 @@ namespace SchoolProject.Services.Implementions
             {
                 try
                 {
-                   await smtp.ConnectAsync(_mailSetting.Host, _mailSetting.Port, SecureSocketOptions.StartTls);
+                   await smtp.ConnectAsync(_mailSetting.Host, _mailSetting.Port, false);
                    await smtp.AuthenticateAsync(_mailSetting.Email, _mailSetting.Password);
 
                    await smtp.SendAsync(email);
@@ -88,6 +88,42 @@ namespace SchoolProject.Services.Implementions
             }
 
         }
+        public async Task<string> SendEmailAsync(string email, string _message, string? reason)
+        {
+
+            try
+            {
+                //sending the Message of passwordResetLink
+                using (var client = new SmtpClient())
+                {
+                    await client.ConnectAsync(_mailSetting.Host, _mailSetting.Port, true);
+                    client.Authenticate(_mailSetting.Email, _mailSetting.Password);
+                    var bodybuilder = new BodyBuilder
+                    {
+                        HtmlBody = $"{_message}",
+                        TextBody = "welcome",
+                    };
+                    var message = new MimeMessage
+                    {
+                        Body = bodybuilder.ToMessageBody()
+                    };
+                    message.From.Add(new MailboxAddress("Ahmed Cleen", _mailSetting.Email));
+                    message.To.Add(new MailboxAddress("testing", email));
+                    message.Subject = reason == null ? "No Submitted" : reason;
+                    await client.SendAsync(message);
+                    await client.DisconnectAsync(true);
+                }
+                //end of sending email
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                
+
+                return "Failed";
+            }
+        }
+
     }
-    
+
 }

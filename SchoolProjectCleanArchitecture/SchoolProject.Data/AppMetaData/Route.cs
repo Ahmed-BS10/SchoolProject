@@ -59,10 +59,11 @@ namespace SchoolProject.Data.AppMetaData
 
         }
         
-        public static class Authencation
+        public static class Authentication
         {
-            public const string Prefix = $"{Rule}Authencation/";
+            public const string Prefix = $"{Rule}Authentication/";
             public const string SignIn = $"{Prefix}SignIn";
+            public const string ConfirmEmail = $"Api/Authentication/ConfirmEmail";
             
 
         }

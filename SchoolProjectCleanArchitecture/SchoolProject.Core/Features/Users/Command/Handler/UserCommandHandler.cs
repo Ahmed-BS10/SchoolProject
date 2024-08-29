@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Core.Bases;
 using SchoolProject.Core.Features.Users.Command.Modle;
@@ -9,6 +10,7 @@ using SchoolProject.Core.Features.Users.Query.Moudles;
 using SchoolProject.Core.Features.Users.Responses;
 using SchoolProject.Core.Wapper;
 using SchoolProject.Data.Entities.Identity;
+using SchoolProject.Services.Abstracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,15 +30,17 @@ namespace SchoolProject.Core.Features.Users.Command.Handler
         #region Field
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
 
         #endregion
 
         #region Constrcutor(s)
-        public UserCommandHandler(UserManager<ApplicationUser> userManager, IMapper mapper)
+        public UserCommandHandler(UserManager<ApplicationUser> userManager, IMapper mapper, IUserService userService)
         {
             _userManager=userManager;
             _mapper=mapper;
+            _userService=userService;
         }
 
 
@@ -45,27 +49,42 @@ namespace SchoolProject.Core.Features.Users.Command.Handler
         #region Funcation Handler
         public async Task<Response<string>> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
-            // if email is exist
-            var user = await _userManager.FindByEmailAsync(request.Email);
-            if (user != null) return BadRequest<string>("the email is already register");
-
-            // if name if exist 
-            var userName = await _userManager.FindByNameAsync(request.UserName);
-            if (userName != null) return BadRequest<string>("the name is already exist ");
-
             // Mapping 
             var userMapper = _mapper.Map<ApplicationUser>(request);
+            var addResult = await _userService.AddUserAsync(userMapper, request.Password);
 
-            // create
-             var createResult = await _userManager.CreateAsync(userMapper, request.Password);
-            //Succeeded
+            switch (addResult)
+            {
+                case "EmailAlreadyExists": return NotFound<string>("FailedToSendEmail");
+                case "UserNameAlreadyExists": return NotFound<string>("EmailAlreadyExists");
+                case "FailedToSendEmail": return BadRequest<string>("FailedToSendEmail");
+                case "Failed": return BadRequest<string>("Failed");
+                case "Success": return Success<string>("");
+            }
 
-            //Add Default Role
-            await _userManager.AddToRoleAsync(userMapper, "User");
-            if (createResult.Succeeded)
-                return Created("Add");
-            //Failed
-            return BadRequest<string>(createResult.Errors.FirstOrDefault().Description);
+            return BadRequest<string>(addResult);
+
+            //// if email is exist
+            //var user = await _userManager.FindByEmailAsync(request.Email);
+            //if (user != null) return BadRequest<string>("the email is already register");
+
+            //// if name if exist 
+            //var userName = await _userManager.FindByNameAsync(request.UserName);
+            //if (userName != null) return BadRequest<string>("the name is already exist ");
+
+            //// Mapping 
+            //var userMapper = _mapper.Map<ApplicationUser>(request);
+
+            //// create
+            // var createResult = await _userManager.CreateAsync(userMapper, request.Password);
+            ////Succeeded
+
+            ////Add Default Role
+            //await _userManager.AddToRoleAsync(userMapper, "User");
+            //if (createResult.Succeeded)
+            //    return Created("Add");
+            ////Failed
+            //return BadRequest<string>(createResult.Errors.FirstOrDefault().Description);
 
 
 
