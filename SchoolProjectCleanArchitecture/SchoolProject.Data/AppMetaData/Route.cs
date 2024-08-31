@@ -65,6 +65,7 @@ namespace SchoolProject.Data.AppMetaData
             public const string SignIn = $"{Prefix}SignIn";
             public const string ConfirmEmail = $"Api/Authentication/ConfirmEmail";
             public const string SendRestEmail = $"Api/Authentication/SendRestEmail";
+            public const string ConfirmResetPassword = $"Api/Authentication/ConfirmResetPassword";
             
 
         }

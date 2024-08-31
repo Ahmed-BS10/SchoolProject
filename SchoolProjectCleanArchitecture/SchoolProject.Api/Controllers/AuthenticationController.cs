@@ -40,6 +40,12 @@ namespace SchoolProject.Api.Controllers
             var response = await _mediator.Send(query);
             return NewResult(response);
         }
+         [HttpGet(Authentication.ConfirmResetPassword)]
+        public async Task<IActionResult> ConfirmResetPassword([FromQuery] ConfirmEmailQuery query)
+        {
+            var response = await _mediator.Send(query);
+            return NewResult(response);
+        }
 
 
 

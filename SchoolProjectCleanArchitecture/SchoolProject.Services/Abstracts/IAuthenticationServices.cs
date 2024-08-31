@@ -19,6 +19,8 @@ namespace SchoolProject.Services.Abstracts
         Task<string> GenerateJWTToken(ApplicationUser user);
         Task<string> ConfirmEmail(string userId, string code);
         Task<string> SendResetPasswordCodeAsync(string email);
+        Task<string> ConfirmResetPassword(string code, string email);
+
 
 
 

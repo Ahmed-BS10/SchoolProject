@@ -9,7 +9,8 @@ using SchoolProject.Services.Abstracts;
 namespace SchoolProject.Core.Features.Authentication.Query.Handler
 {
     public class AuthenticationQueryHandler : ResponseHandler,
-                                              IRequestHandler<ConfirmEmailQuery, Response<string>>
+                                              IRequestHandler<ConfirmEmailQuery, Response<string>>,
+                                              IRequestHandler<ConfirmRestPasswordEmailQuery, Response<string>>
       
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -37,6 +38,15 @@ namespace SchoolProject.Core.Features.Authentication.Query.Handler
             return BadRequest<string>();
         }
 
-        
+        public async Task<Response<string>> Handle(ConfirmRestPasswordEmailQuery request, CancellationToken cancellationToken)
+        {
+            var confirmPasswordEmail = await _authenticationService.ConfirmResetPassword(request.Email, request.Code);
+            switch(confirmPasswordEmail)
+            {
+                case "Success": return Success(confirmPasswordEmail);
+                case "Failed": return BadRequest<string>("Failed");
+                default : return BadRequest<string>("hi");
+            }
+        }
     }
 }
