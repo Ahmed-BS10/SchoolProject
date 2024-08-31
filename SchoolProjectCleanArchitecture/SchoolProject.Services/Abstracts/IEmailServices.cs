@@ -13,5 +13,6 @@ namespace SchoolProject.Services.Abstracts
         Task<string> SendEmailAsync(string email, string message, string? reason);
 
 
+
     }
 }

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using EntityFrameworkCore.EncryptColumn.Extension;
+using EntityFrameworkCore.EncryptColumn.Interfaces;
+using EntityFrameworkCore.EncryptColumn.Util;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagment.Data.Entities.Identity;
 using SchoolProject.Data.Entities;
@@ -14,8 +17,14 @@ namespace SchoolProject.Infrastrcture.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContextOptions) :base(dbContextOptions) { }
+      ///  private readonly IEncryptionProvider _encryptionProvider;
+       
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContextOptions) :base(dbContextOptions)
+        {
+           // _encryptionProvider = new GenerateEncryptionProvider("qwerertrtdfg");
+        }
         
+
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
         public DbSet<ApplicationUser> Users {  get; set; }
         public DbSet<Student> students { get; set; }
@@ -24,8 +33,12 @@ namespace SchoolProject.Infrastrcture.Data
         public DbSet<StudentSubject> studentSubjects { get; set; }
         public DbSet<DepartmetSubject> departmetSubjects { get; set; }
 
-
-      
-
+        //protected override void OnModelCreating(ModelBuilder builder)
+        //{
+        //    base.OnModelCreating(builder);
+        //    builder.UseEncryption(_encryptionProvider);
+        //}
     }
+
+    
 }

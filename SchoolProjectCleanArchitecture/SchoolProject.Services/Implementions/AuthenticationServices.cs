@@ -4,6 +4,7 @@ using SchoolManagment.Data.Entities.Identity;
 using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Data.Helper;
 using SchoolProject.Infrastrcture.Abstracts;
+using SchoolProject.Infrastrcture.Data;
 using SchoolProject.Services.Abstracts;
 using System;
 using System.Collections.Concurrent;
@@ -22,13 +23,17 @@ namespace SchoolProject.Services.Implementions
         private readonly IRefreshTokenRepoistory _refreshTokenRepoistory;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly JwtSettings _jwtSettings;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly IEmailServices _emailServices;
         // private readonly ConcurrentDictionary<string,RefreshToken> _userRefreshTokens;
-        public AuthenticationServices(UserManager<ApplicationUser> userManager, JwtSettings jwtSettings, IRefreshTokenRepoistory refreshTokenRepoistory)
+        public AuthenticationServices(UserManager<ApplicationUser> userManager, JwtSettings jwtSettings, IRefreshTokenRepoistory refreshTokenRepoistory, ApplicationDbContext dbContext, IEmailServices emailServices)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings;
             // _userRefreshTokens=new ConcurrentDictionary<string, RefreshToken>();
             _refreshTokenRepoistory = refreshTokenRepoistory;
+            _dbContext=dbContext;
+            _emailServices=emailServices;
         }
         //public async Task <JWTAuthResult> CreateTokenAsync(ApplicationUser applicationUser )
         //{
@@ -313,6 +318,44 @@ namespace SchoolProject.Services.Implementions
 
             return "Success";
         }
+        public async Task<string> SendResetPasswordCodeAsync(string email)
+        {
+            var transaction = _dbContext.Database.BeginTransaction(); ;
+
+            try
+            {
+                // check for user 
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                    return "UserNotFound";
+
+                // generate random number
+                var chars = "0123456789";
+                var random = new Random();
+                var randomNumber = new string(Enumerable.Repeat(chars, 6).Select(s => s[random.Next(s.Length)]).ToArray());
+
+                //update User In Database With Protected Code
+                user.Code = randomNumber;
+                var updateResult = await _userManager.UpdateAsync(user);
+
+                if (!updateResult.Succeeded)
+                    return "ErrorInUpdateUser";
+
+                //Send Code To  Email 
+                var message = "Code To Reset Password : " + randomNumber;
+                await _emailServices.SendEmailAsync(user?.Email ?? "", message, "Reset Password");
+                await transaction.CommitAsync();
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                
+
+                transaction.Rollback();
+                return "Failed";
+            }
+        }
+       
 
     }
 }

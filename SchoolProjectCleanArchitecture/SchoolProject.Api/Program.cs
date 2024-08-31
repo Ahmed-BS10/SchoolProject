@@ -25,7 +25,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInfarstrctureDependincies()
                  .AddServiesDependencies()
                  .AddCoreDependencies()
-                 .AddServciesRegistreationss(builder.Configuration);
+                .AddServciesRegistreationss(builder.Configuration);
 
 #endregion
 

@@ -7,10 +7,6 @@ using Microsoft.OpenApi.Models;
 using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Data.Helper;
 using SchoolProject.Infrastrcture.Data;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -72,8 +68,7 @@ namespace SchoolProject.Infrastrcture
                     };
                 });
 
-
-            //Swagger Gn
+           
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "School Project", Version = "v1" });

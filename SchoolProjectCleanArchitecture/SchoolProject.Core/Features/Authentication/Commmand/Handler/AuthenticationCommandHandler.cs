@@ -15,6 +15,7 @@ namespace SchoolProject.Core.Features.Authentication.Commmand.Handler
 {
     public class AuthenticationCommandHandler : ResponseHandler,
                                                 IRequestHandler<SignCommand, Response<string>>
+                                                ,IRequestHandler<SendResetPasswordCodeCommand , Response<string>>
     {
 
         #region Field
@@ -43,6 +44,19 @@ namespace SchoolProject.Core.Features.Authentication.Commmand.Handler
             if (!signInResult.Succeeded) return BadRequest<string>();
             var accessToken = await  _authenticationServices.GenerateJWTToken(user);
             return Success(accessToken);
+        }
+        public async Task<Response<string>> Handle(SendResetPasswordCodeCommand request, CancellationToken cancellationToken)
+        {
+           var sendRestEmail = await _authenticationServices.SendResetPasswordCodeAsync(request.Email);
+            switch(sendRestEmail)
+            {
+                case "UserNotFound": return NotFound<string>("UserNotFound");
+                case "ErrorInUpdateUser": return BadRequest<string>("ErrorInUpdateUser");
+                case "Success": return Success(sendRestEmail);
+                default: return BadRequest<string>("Failed");
+
+
+            }
         }
         #endregion
 

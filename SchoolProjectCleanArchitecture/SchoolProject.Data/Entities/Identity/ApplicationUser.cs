@@ -13,6 +13,9 @@ namespace SchoolProject.Data.Entities.Identity
         public string FullName { get; set; }
         public string? Address { get; set; }
         public string? Countory { get; set; }
+
+      
+        public string ? Code { get; set; }
         public virtual ICollection<UserRefreshToken>? UserRefreshTokens { get; set; }
 
     }

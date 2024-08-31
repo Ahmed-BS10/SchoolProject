@@ -27,6 +27,12 @@ namespace SchoolProject.Api.Controllers
             return NewResult(response);
         }
 
+        [HttpPost(Authentication.SendRestEmail)]
+        public async Task<IActionResult> SendRestEmail(string email)
+        {
+            var response = await _mediator.Send(new SendResetPasswordCodeCommand(email));
+            return NewResult(response);
+        }
 
         [HttpGet(Authentication.ConfirmEmail)]
         public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailQuery query)
