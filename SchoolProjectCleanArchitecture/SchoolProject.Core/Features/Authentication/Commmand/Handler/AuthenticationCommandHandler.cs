@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using SchoolProject.Core.Bases;
 using SchoolProject.Core.Features.Authentication.Commmand.Models;
+using SchoolProject.Core.Resources;
 using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Data.Helper;
 using SchoolProject.Services.Abstracts;
@@ -16,6 +18,7 @@ namespace SchoolProject.Core.Features.Authentication.Commmand.Handler
     public class AuthenticationCommandHandler : ResponseHandler,
                                                 IRequestHandler<SignCommand, Response<string>>
                                                 ,IRequestHandler<SendResetPasswordCodeCommand , Response<string>>
+                                                ,IRequestHandler<UpdatePasswordCommand , Response<string>>
     {
 
         #region Field
@@ -40,8 +43,13 @@ namespace SchoolProject.Core.Features.Authentication.Commmand.Handler
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
             if (user == null) return NotFound<string>();
+
+            if (!user.EmailConfirmed)
+                return BadRequest<string>("Un  EmailConfirmed");
+
             var signInResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password,true);
             if (!signInResult.Succeeded) return BadRequest<string>();
+
             var accessToken = await  _authenticationServices.GenerateJWTToken(user);
             return Success(accessToken);
         }
@@ -57,6 +65,18 @@ namespace SchoolProject.Core.Features.Authentication.Commmand.Handler
 
 
             }
+        }
+
+        public async Task<Response<string>> Handle(UpdatePasswordCommand request, CancellationToken cancellationToken)
+        {
+            var result = await _authenticationServices.UpdatePassword(request.Email, request.Password);
+            switch (result)
+            {
+                case "UserNotFound": return NotFound<string>("UserNotFound");
+                case "Failed": return BadRequest<string>("Failed");
+                default: return BadRequest<string>("some thinges");
+            }
+           
         }
         #endregion
 

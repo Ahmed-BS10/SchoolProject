@@ -349,7 +349,7 @@ namespace SchoolProject.Services.Implementions
             }
             catch (Exception ex)
             {
-                
+
 
                 transaction.Rollback();
                 return "Failed";
@@ -367,6 +367,31 @@ namespace SchoolProject.Services.Implementions
                 return "Success";
             return "Failed";
         }
+        public async Task<string> UpdatePassword(string email, string password)
+        {
+            var transaction = _dbContext.Database.BeginTransaction();
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                    return "UserNotFound";
 
+
+                var result = await _userManager.RemovePasswordAsync(user);
+                if (!result.Succeeded) return "Failed";
+                result = await _userManager.AddPasswordAsync(user, password);
+                if (!result.Succeeded) return "Failed";
+
+                await transaction.CommitAsync();
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+
+                transaction.Rollback();
+                return "Failed";
+                throw;
+            }
+        }
     }
 }

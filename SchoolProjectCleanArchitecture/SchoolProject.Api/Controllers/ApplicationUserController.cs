@@ -22,13 +22,6 @@ namespace SchoolProject.Api.Controllers
 
         #region Endpoint
 
-        [HttpPost(UserRouting.Create)]
-        public async Task<IActionResult> Create(AddUserCommand command)
-        {
-            var response = await _mediator.Send(command);
-            return NewResult(response);
-        }
-
 
         [HttpGet(UserRouting.Pagination)]
         public async Task<IActionResult> PaginateList([FromQuery] GetUserPaginationListQuery query)
@@ -41,6 +34,13 @@ namespace SchoolProject.Api.Controllers
         public async Task<IActionResult> GetById(string id)
         {
             var response = await _mediator.Send(new GetUserByIdQuery(id));
+            return NewResult(response);
+        }
+
+        [HttpPost(UserRouting.Create)]
+        public async Task<IActionResult> Create(AddUserCommand command)
+        {
+            var response = await _mediator.Send(command);
             return NewResult(response);
         }
 

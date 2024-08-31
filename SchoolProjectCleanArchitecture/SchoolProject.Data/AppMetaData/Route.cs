@@ -24,6 +24,7 @@ namespace SchoolProject.Data.AppMetaData
             public const string GetUserWithRoles = $"{Prefix}GetUserWithRoles";
             public const string UserClaims = $"{Prefix}UserClaims";
             public const string EditUserRoles = $"{Prefix}EditUserRoles";
+            public const string EditUserClaims = $"{Prefix}EditUserClaims";
 
 
 
@@ -64,8 +65,9 @@ namespace SchoolProject.Data.AppMetaData
             public const string Prefix = $"{Rule}Authentication/";
             public const string SignIn = $"{Prefix}SignIn";
             public const string ConfirmEmail = $"Api/Authentication/ConfirmEmail";
-            public const string SendRestEmail = $"Api/Authentication/SendRestEmail";
+            public const string SendResetPasswordCode = $"Api/Authentication/SendResetPasswordCode";
             public const string ConfirmResetPassword = $"Api/Authentication/ConfirmResetPassword";
+            public const string UpdatePassword = $"Api/Authentication/UpdatePassword";
             
 
         }

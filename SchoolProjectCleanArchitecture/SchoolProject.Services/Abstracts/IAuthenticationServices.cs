@@ -20,7 +20,7 @@ namespace SchoolProject.Services.Abstracts
         Task<string> ConfirmEmail(string userId, string code);
         Task<string> SendResetPasswordCodeAsync(string email);
         Task<string> ConfirmResetPassword(string code, string email);
-
+        Task<string> UpdatePassword(string email, string password);
 
 
 

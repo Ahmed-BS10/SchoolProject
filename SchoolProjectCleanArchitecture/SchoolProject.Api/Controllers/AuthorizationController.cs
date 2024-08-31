@@ -18,28 +18,13 @@ namespace SchoolProject.Api.Controllers
         {
         }
 
-        [HttpPut("aa")]
-        public async Task<IActionResult> EditUserClaims(EditUserClaimCommand command)
-        {
-            var response = await _mediator.Send(command);
-            return NewResult(response);
-        }
-
-
+        
         [HttpGet(AuthorizationRouting.UserClaims)]
         public async Task<IActionResult> GetUserClaims(string id)
         {
             var response = await _mediator.Send( new ManagerUserClaimQuery(id));
             return NewResult(response);
         }
-
-        [HttpPut(AuthorizationRouting.EditUserRoles)]
-        public async Task<IActionResult> EditUserRoles([FromBody] EditUserRolesCommand command)
-        {
-            var response = await _mediator.Send(command);
-            return NewResult(response);
-        }
-
         [HttpGet(AuthorizationRouting.GetUserWithRoles)]
         public async Task<IActionResult> GetUserWithRoles(string id)
         {
@@ -60,7 +45,9 @@ namespace SchoolProject.Api.Controllers
             var response = await _mediator.Send(new GeyRoleByIdQuery(id));
             return NewResult(response);
         }
+       
 
+        
         [HttpPost(AuthorizationRouting.AddRole)]
         public async Task<IActionResult> Add(string roleName)
         {
@@ -68,13 +55,27 @@ namespace SchoolProject.Api.Controllers
             return NewResult(resonse);
         }
 
-
         [HttpPut(AuthorizationRouting.EditRole)]
         public async Task<IActionResult> Edit(EditRoleCommand command)
         {
             var resonse = await _mediator.Send(command);
             return NewResult(resonse);
         }
+        [HttpPut(AuthorizationRouting.EditUserRoles)]
+        public async Task<IActionResult> EditUserRoles([FromBody] EditUserRolesCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return NewResult(response);
+        }
+
+        [HttpPut(AuthorizationRouting.EditUserClaims)]
+        public async Task<IActionResult> EditUserClaims(EditUserClaimCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return NewResult(response);
+        }
+
+
 
         [HttpDelete(AuthorizationRouting.DeleteRole)]
         public async Task<IActionResult> Delete(string id)
