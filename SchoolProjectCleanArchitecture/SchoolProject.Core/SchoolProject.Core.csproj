@@ -22,7 +22,9 @@
     <Folder Include="Features\Departments\Commands\Models\" />
     <Folder Include="Features\Departments\Commands\Handlers\" />
     <Folder Include="Features\Email\Query\" />
+    <Folder Include="Features\Instructor\Query\" />
     <Folder Include="Mapping\Departments\CommandMapping\" />
+    <Folder Include="Mapping\Instructors\QueryMapping\" />
   </ItemGroup>
 
 </Project>

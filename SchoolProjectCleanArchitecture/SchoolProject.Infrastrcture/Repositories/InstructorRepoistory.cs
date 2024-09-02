@@ -3,7 +3,7 @@ using SchoolProject.Data.Entities;
 using SchoolProject.Infrastrcture.Data;
 using SchoolProject.Infrastrcture.InfarstrctureBases;
 
-public class InstructorRepository : GenericRepositoryAsync<Instructor>, InstructorRepoistory
+public class InstructorRepoistory : GenericRepositoryAsync<Instructor>, IInstructorRepoistory
 {
     #region Fields
 
@@ -12,7 +12,7 @@ public class InstructorRepository : GenericRepositoryAsync<Instructor>, Instruct
     #endregion
 
     #region Constructors
-    public InstructorRepository(ApplicationDbContext context) : base(context)
+    public InstructorRepoistory(ApplicationDbContext context) : base(context)
     {
         _instructor = context.Set<Instructor>();
     }

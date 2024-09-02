@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Api.Base;
 using SchoolProject.Core.Features.Students.Commands.Moudles;
 using SchoolProject.Core.Features.Students.Queries.Models;
+using SchoolProject.Core.Flitres;
 using SchoolProject.Data.DTO;
 using static SchoolProject.Data.AppMetaData.Route;
 
@@ -25,6 +26,7 @@ namespace SchoolProject.Api.Controllers
         #region EndPoint
 
         [HttpGet(StudentRouting.Pagination)]
+        [ServiceFilter(typeof(AuthFilter))]
         public async Task<IActionResult> GetPaginateList([FromQuery] GetStudentPaginateListQuery query)
         {
 

@@ -17,7 +17,11 @@ namespace SchoolProject.Services
             services.AddTransient<IAuthorizationServices, AuthorizationServices>();
             services.AddTransient<IEmailServices, EmailServices>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ICurrentUserService, CurrentUserService>();
             services.AddTransient<IActionContextAccessor, ActionContextAccessor>();
+            services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IInstructorService, InstructorService>();
+
             services.AddTransient<IUrlHelper>(x =>
             {
                 var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;

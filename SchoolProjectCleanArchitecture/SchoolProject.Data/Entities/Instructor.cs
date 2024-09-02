@@ -20,7 +20,7 @@ namespace SchoolProject.Data.Entities
         public int? SupervisorId { get; set; }
         public double? Salary { get; set; }
         public int? DID { get; set; }
-
+        public string? ImagePath { get; set; }
 
         // Money Instructors To One Department
 

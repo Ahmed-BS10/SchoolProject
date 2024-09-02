@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SchoolManagment.Infrastructure.Seeder;
 using SchoolProject.Core;
+using SchoolProject.Core.Flitres;
 using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Data.Helper;
 using SchoolProject.Infrastrcture;
@@ -56,6 +57,10 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedUICultures = supportedCultures;
 });
 
+#endregion
+
+#region Filter
+builder.Services.AddTransient<AuthFilter>();
 #endregion
 
 

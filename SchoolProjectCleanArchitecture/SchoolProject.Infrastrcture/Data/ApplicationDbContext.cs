@@ -24,7 +24,7 @@ namespace SchoolProject.Infrastrcture.Data
            // _encryptionProvider = new GenerateEncryptionProvider("qwerertrtdfg");
         }
         
-
+       public DbSet<Instructor> Instructors { get; set; }
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
         public DbSet<ApplicationUser> Users {  get; set; }
         public DbSet<Student> students { get; set; }
