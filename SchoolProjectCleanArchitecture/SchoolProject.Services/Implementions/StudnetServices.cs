@@ -59,7 +59,7 @@ namespace SchoolProject.Services.Implementions
         {
             var studentresponse = await _studentRepository.GetTableNoTracking().Where(x => x.StudID == student.StudID).FirstOrDefaultAsync();
             if (studentresponse is null) return "Exist";
-           await _studentRepository.UpdateAsync(student);
+            await _studentRepository.UpdateAsync(student);
             return "Success";
 
         }

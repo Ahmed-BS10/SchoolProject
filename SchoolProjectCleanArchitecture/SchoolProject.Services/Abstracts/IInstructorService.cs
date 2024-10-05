@@ -13,7 +13,12 @@ namespace SchoolProject.Services.Abstracts
 
         bool IsNameEnExist(string name);
         Task<bool> IsExist(int id);
-        Task<string> AddInstructorAsync(Instructor instructor, IFormFile Image);
+        Task<List<Instrctor>> GetInstructorListAsync();
+        Task<string> AddInstructorAsync(Instrctor instructor, IFormFile Image);
+        Task<string> DeleteInstructorAsync(int id);
+        Task<string> EditInstructorAsync(Instrctor instrctor);
+
+
         //Task<IReadOnlyList<Instructor>> GetAllInstructorsAsync();
         //Task<Instructor?> GetInstructorByIdAsync(int id);
     }

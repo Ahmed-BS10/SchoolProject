@@ -28,7 +28,7 @@ namespace SchoolProject.Core.Mapping.Departments
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Subjects.SubjectName));
 
 
-            CreateMap<Instructor, InstructorResponse>()
+            CreateMap<Instrctor, InstructorResponse>()
                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.InstId))
                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
 

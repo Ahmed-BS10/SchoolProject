@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SchoolProject.Data.Contract;
 
 namespace SchoolProject.Data.Entities
 {
-    public class Student
+    public class Student : ISoftDeleteable
     {
         [Key]
         public int StudID { get; set; }
@@ -21,7 +22,6 @@ namespace SchoolProject.Data.Entities
         [StringLength(500)]
         public string Phone { get; set; }
 
-
         public int? DID { get; set; }
         [ForeignKey("DID")]
         [InverseProperty("Students")]
@@ -29,8 +29,11 @@ namespace SchoolProject.Data.Entities
 
         [InverseProperty("Student")]
         public virtual ICollection<StudentSubject>? StudentsSubjects { get; set; }
-    }
 
+
+        public bool IsDeleted { get; set; }
+        public DateTime? DateDeleted {get; set; }
+    }
 
 }
 

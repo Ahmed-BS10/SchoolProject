@@ -15,7 +15,7 @@ namespace SchoolProject.Data.Entities
 
         [ForeignKey("InsId")]
         [InverseProperty(nameof(Instructor.SubjectInsturctors))]
-        public Instructor? Instructor { get; set; }
+        public Instrctor? Instructor { get; set; }
 
 
 

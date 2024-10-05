@@ -17,7 +17,10 @@ namespace SchoolProject.Services.Abstracts
         //Task<JWTAuthResult> GetRefreshTokenAsync(string accessToken , string refreshToken);
         //Task <string> ValidateToken(string accessToken);
         Task<string> GenerateJWTToken(ApplicationUser user);
+        // Email
         Task<string> ConfirmEmail(string userId, string code);
+
+        //Password
         Task<string> SendResetPasswordCodeAsync(string email);
         Task<string> ConfirmResetPassword(string code, string email);
         Task<string> UpdatePassword(string email, string password);

@@ -28,14 +28,14 @@ public partial class Department
     //
 
     [InverseProperty("department")]
-    public virtual ICollection<Instructor>? instructors { get; set; }
+    public virtual ICollection<Instrctor>? instructors { get; set; }
 
     //
 
 
     [ForeignKey("InsManager")]
-    [InverseProperty(nameof(Instructor.DepartmentManage))]
-    public virtual Instructor? instructor { get; set; }
+    [InverseProperty(nameof(Instrctor.DepartmentManage))]
+    public virtual Instrctor? instructor { get; set; }
 
 }
 

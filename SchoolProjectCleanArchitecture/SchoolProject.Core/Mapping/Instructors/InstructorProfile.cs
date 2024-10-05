@@ -12,6 +12,8 @@ namespace SchoolProject.Core.Mapping.Instructors
         public InstructorProfile()
         {
             AddInstructorCommandMapping();
+            GetListInstructorQueryMapper();
+            EditInstcutorCommandMapping();
         }
     }
 }

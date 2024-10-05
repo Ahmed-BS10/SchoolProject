@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SchoolManagment.Data.Entities.Identity;
 using SchoolProject.Data.Entities;
 using SchoolProject.Data.Entities.Identity;
+using SchoolProject.Infrastrcture.Interceptors;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,7 +25,7 @@ namespace SchoolProject.Infrastrcture.Data
            // _encryptionProvider = new GenerateEncryptionProvider("qwerertrtdfg");
         }
         
-       public DbSet<Instructor> Instructors { get; set; }
+       public DbSet<Instrctor> Instructors { get; set; }
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
         public DbSet<ApplicationUser> Users {  get; set; }
         public DbSet<Student> students { get; set; }
@@ -33,12 +34,22 @@ namespace SchoolProject.Infrastrcture.Data
         public DbSet<StudentSubject> studentSubjects { get; set; }
         public DbSet<DepartmetSubject> departmetSubjects { get; set; }
 
-        //protected override void OnModelCreating(ModelBuilder builder)
-        //{
-        //    base.OnModelCreating(builder);
-        //    builder.UseEncryption(_encryptionProvider);
-        //}
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            // builder.UseEncryption(_encryptionProvider);
+
+            //builder.HasQueryFilter(x => x.IsDeleted == false);
+            builder.Entity<Student>().HasQueryFilter(x => x.IsDeleted == false);
+
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
+        }
+
     }
 
-    
+
 }

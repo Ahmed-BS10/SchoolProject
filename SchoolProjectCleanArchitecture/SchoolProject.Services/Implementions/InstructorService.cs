@@ -25,14 +25,21 @@ namespace SchoolProject.Services.Implementions
         public bool IsNameEnExist(string name)
             => _instructorRepository.GetTableNoTracking().Any(x => x.Name == name);
        
-        public async Task<string> AddInstructorAsync(Instructor instructor, IFormFile image)
+        public async Task<string> AddInstructorAsync(Instrctor instructor, IFormFile image)
         {
             // Construct the base URL for the current request
-            var request = _httpContext.HttpContext.Request;
-            var baseUrl = $"{request.Scheme}://{request.Host}";
+            //var request = _httpContext.HttpContext.Request;
+            //var baseUrl = $"{request.Scheme}://{request.Host}";
 
             // Upload the image file and get the image path
-            string imagePath = await _fileService.UploadFileAsync("InstructorImages", image);
+            string imagePath = null;
+            if (image != null)
+            {
+               imagePath = await _fileService.UploadFileAsync("InstructorImages", image);
+
+            }
+
+
 
             // Check if the image upload was successful
             if (imagePath == "NoImage" || imagePath == "FailedToUploadImage")
@@ -41,7 +48,7 @@ namespace SchoolProject.Services.Implementions
             try
             {
                 // Set the image path for the instructor
-                instructor.ImagePath = $"{baseUrl}{imagePath}";
+              //  instructor.ImagePath = $"{baseUrl}{imagePath}";
 
                 // Add the instructor to the repository
                 await _instructorRepository.AddAsync(instructor);
@@ -55,10 +62,34 @@ namespace SchoolProject.Services.Implementions
                 return "FailedToAddInstructor";
             }
         }
-
         public async Task<bool> IsExist(int id)
             =>await _instructorRepository.GetTableNoTracking().AnyAsync(x => x.InstId == id);
+        public async Task<string> DeleteInstructorAsync(int id)
+        {
+            var insructor =await _instructorRepository.GetTableNoTracking().Where(x => x.InstId == id).FirstOrDefaultAsync();
+            if (insructor is not null)
+            {
+                await _instructorRepository.DeleteAsync(insructor);
+                return "Success";
+            }
 
 
+            return "Failed";
+
+
+        }
+        public async Task<List<Instrctor>> GetInstructorListAsync()
+        {
+            var listInstructor = await _instructorRepository.GetInstructorListAsync();
+            return listInstructor.ToList();
+        }
+        public async Task<string> EditInstructorAsync(Instrctor instrctor)
+        {
+            var instrctoresponse = await _instructorRepository.GetTableNoTracking().Where(x => x.InstId == instrctor.InstId).FirstOrDefaultAsync();
+
+            if (instrctoresponse is null) return "Exist";
+            await _instructorRepository.UpdateAsync(instrctor);
+            return "Success";
+        }
     }
 }

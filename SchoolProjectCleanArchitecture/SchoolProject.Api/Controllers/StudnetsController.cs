@@ -13,7 +13,7 @@ namespace SchoolProject.Api.Controllers
 {
     
     [ApiController]
-    [Authorize(Roles = "Admin")]
+   // [Authorize(Roles = "Admin")]
     public class StudnetsController : AppControllerBase
     {
         #region Constrcutor(s)
@@ -26,7 +26,7 @@ namespace SchoolProject.Api.Controllers
         #region EndPoint
 
         [HttpGet(StudentRouting.Pagination)]
-        [ServiceFilter(typeof(AuthFilter))]
+       // [ServiceFilter(typeof(AuthFilter))]
         public async Task<IActionResult> GetPaginateList([FromQuery] GetStudentPaginateListQuery query)
         {
 
@@ -34,7 +34,7 @@ namespace SchoolProject.Api.Controllers
             if (response == null) return BadRequest("Help");
             return Ok(response);
         }
-        [Authorize(policy: "CreateStudent")]
+       // [Authorize(policy: "CreateStudent")]
         [HttpGet(StudentRouting.List)]
         public async Task<IActionResult> GetStudnetList()
         {

@@ -87,5 +87,17 @@ namespace SchoolProject.Data.AppMetaData
 
         }
 
+
+
+        public static class InstructorRouting
+        {
+            public const string Prefix = $"{Rule}Instructor/";
+            public const string List = $"{Prefix}List";
+            public const string Create = $"{Prefix}Create";
+            public const string Delete = $"{Prefix}Delete{"Id"}";
+            public const string Edit = $"{Prefix}Edit";
+
+        }
+
     }
 }

@@ -13,7 +13,8 @@ namespace SchoolProject.Core.Mapping
         public void AddStudentCommandMapping()
         {
             CreateMap<AddStudentCommand, Student>()
-                .ForMember(dest => dest.DID, opt => opt.MapFrom(src => src.DepartmentId));
+                .ForMember(dest => dest.DID, opt => opt.MapFrom(src => src.DepartmentId))
+                .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => src.IsDeleted));
         }
     }
 }

@@ -3,17 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolProject.Data.Entities
 {
-    public class Instructor 
+    public class Instrctor
     {
-        public Instructor()
+        public Instrctor()
         {
-            Instructors = new HashSet<Instructor>();
+            Instructors = new HashSet<Instrctor>();
             SubjectInsturctors = new HashSet<SubjectInsturctor>();
         }
 
         [Key]
         public int InstId { get; set; }
-
         public string? Name { get; set; }
         public string? Address { get; set; }
         public string? Position { get; set; }
@@ -39,13 +38,13 @@ namespace SchoolProject.Data.Entities
 
         [ForeignKey("SupervisorId")]
         [InverseProperty("Instructors")]
-        public Instructor? Supervisor { get; set; }
+        public Instrctor? Supervisor { get; set; }
 
 
 
-        // Instructors Manger By   Supervisor
+        // Instructors Manger By  Supervisor
         [InverseProperty("Supervisor")]
-        public virtual ICollection<Instructor>? Instructors { get; set; }
+        public virtual ICollection<Instrctor>? Instructors { get; set; }
 
 
 

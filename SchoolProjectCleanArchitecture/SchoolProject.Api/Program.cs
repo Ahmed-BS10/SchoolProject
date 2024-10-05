@@ -5,10 +5,12 @@ using Microsoft.Extensions.Configuration;
 using SchoolManagment.Infrastructure.Seeder;
 using SchoolProject.Core;
 using SchoolProject.Core.Flitres;
+using SchoolProject.Core.Middleware;
 using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Data.Helper;
 using SchoolProject.Infrastrcture;
 using SchoolProject.Infrastrcture.Data;
+using SchoolProject.Infrastrcture.Interceptors;
 using SchoolProject.Services;
 using System.Globalization;
 
@@ -32,7 +34,7 @@ builder.Services.AddInfarstrctureDependincies()
 
 #region DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
-option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).AddInterceptors(new SoftDeleteInterceptor()));
 #endregion
 
 #region Localization
@@ -81,6 +83,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
